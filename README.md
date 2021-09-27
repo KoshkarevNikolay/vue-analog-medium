@@ -4,8 +4,6 @@
 
 
 ```
-You need use Node 12v
-
 npm install
 
 npm start
