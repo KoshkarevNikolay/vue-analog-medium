@@ -1,29 +1,75 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/posts',
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/login',
+    name: 'login',
+    meta: { layout: 'login' },
+    component: () => import('../views/Login.vue'),
+  },
+  {
+    path: '/posts',
+    name: 'home',
+    meta: { layout: 'main' },
+    component: () => import('../views/Home.vue'),
+  },
+  {
+    path: '/posts/new',
+    name: 'postnew',
+    meta: {
+      layout: 'main',
+      isWriter: true,
+    },
+    component: () => import('../views/PostNew.vue'),
+  },
+  {
+    path: '/posts/:id',
+    name: 'post',
+    meta: { layout: 'main' },
+    component: () => import('../views/Post.vue'),
+  },
+  {
+    path: '/posts/:id/edit',
+    name: 'postedit',
+    meta: {
+      layout: 'main',
+      isWriter: true,
+    },
+    component: () => import('../views/PostEdit.vue'),
+  },
+  {
+    path: '*',
+    name: 'notfound',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('../views/NotPage.vue'),
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const currentUser = store.getters.isWriter
+  const requireWriter = to.matched.some((r) => r.meta.isWriter)
+
+  if (requireWriter && !currentUser) {
+    next('/posts')
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -5,8 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "json-server": "json-server --watch ./json-server/db.json",
-    "start": "concurrently \"npm run json-server\" \"npm run serve\""
+    "server": "json-server --watch ./server/db.json",
+    "start": "concurrently \"npm run server\" \"npm run serve\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -16,8 +16,8 @@
     "axios": "^0.21.4",
     "buefy": "^0.9.10",
     "concurrently": "^6.2.1",
-    "core-js": "^3.6.5",
     "json-server": "^0.16.3",
+    "lodash": "^4.17.21",
     "vue": "^2.6.11",
     "vue-router": "^3.5.2",
     "vuelidate": "^0.7.6",
